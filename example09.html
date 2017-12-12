@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<meta charset = utf8>
+<html>
+
+<head>
+    <title>HW button</title>
+</head>
+
+<body>
+    
+<div id="print1"></div>    
+
+<br>
+
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+<script type="text/javascript">
+"use strict"; 
+var numberOfLinesBeforeScroll = 30;
+var linesPrintCounter = 0;
+var divElement = document.getElementById("print1"); 
+function log(msg) {
+    var node = document.createElement("tr");
+    var textnode = document.createTextNode(linesPrintCounter + "|" + msg);
+    node.appendChild(textnode); 
+    divElement.insertBefore(node, divElement.childNodes[0]);
+    if (linesPrintCounter > numberOfLinesBeforeScroll-1) {
+        divElement.removeChild(divElement.childNodes[numberOfLinesBeforeScroll]);
+    }
+    linesPrintCounter++; 
+}
+var socket = io.connect("172.16.22.248:8080"); 
+socket.on("messageToClient", function (msg) {
+    log(msg); 
+});
+</script>
+    
+</body>
+    
+</html>
