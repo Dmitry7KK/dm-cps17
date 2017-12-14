@@ -5,13 +5,10 @@ var firmata = require("firmata");
 
 console.log("Starting the code");
 
-var board = new firmata.Board("/dev/ttyACM0", function() { // ACM Abstract Control Model for serial communication with Arduino (could be USB)
+var board = new firmata.Board("/dev/ttyACM0", function() {  
     console.log("Arduino connect");
-    board.pinMode(2, board.MODES.OUTPUT); // direction of DC motor
-    board.pinMode(3, board.MODES.PWM); // PWM of motor i.e. speed of rotation
-    board.pinMode(4, board.MODES.OUTPUT); // direction DC motor
-    board.digitalWrite(2,1); // initialization of digital pin 2 to rotate Left on start
-    board.digitalWrite(4,0); // initialization of digital pin 2 to rotate Left on start
+    board.pinMode(8, board.MODES.OUTPUT); 
+    board.pinMode(3, board.MODES.PWM);  
 });
 
 function handler(req, res) {
@@ -42,15 +39,13 @@ board.on("ready", function() {
     });
     
     socket.on("left", function(value){
-        board.digitalWrite(2,value.AIN1);
-        board.digitalWrite(4,value.AIN2);
+        board.digitalWrite(8,1);
         console.log("left");
         socket.emit("messageToClient", "Direction: left");
     });
     
     socket.on("right", function(value){
-        board.digitalWrite(2,value.AIN1);
-        board.digitalWrite(4,value.AIN2);
+        board.digitalWrite(8,0);
         socket.emit("messageToClient", "Direction: right");
     });
     
