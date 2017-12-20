@@ -33,7 +33,7 @@ http.listen(8080); // server will listen on port 8080
 var desiredValue = 0;
 var actualValue = 0;
 
-var factor = 2.5;
+var factor = 0.1;
 var pwm = 0;
 
 var controlAlgorithmStartedFlag = 0; // variable for indicating weather the Alg has benn sta.
@@ -72,8 +72,8 @@ function controlAlgorithm () {
     pwm = factor*(desiredValue-actualValue);
     if (pwm > 255) {pwm =  255}; // to limit pwm values
     if (pwm < -255) {pwm = -255}; // to limit pwm values
-    if (pwm > 0) {board.digitalWrite(2,1); board.digitalWrite(4,0);}; // direction if > 0
-    if (pwm < 0) {board.digitalWrite(2,0); board.digitalWrite(4,1);}; // direction if < 0
+    if (pwm > 0) {board.digitalWrite(2,1); board.digitalWrite(8,0);}; // direction if > 0
+    if (pwm < 0) {board.digitalWrite(2,0); board.digitalWrite(8,1);}; // direction if < 0
     board.analogWrite(3, Math.abs(pwm));
 };
 
