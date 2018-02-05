@@ -43,7 +43,8 @@ var pwmLimit = 254; // to limit value of the pwm that is sent to the motor
 
 var controlAlgorithmStartedFlag = 0; 
 var intervalCtrl; 
-
+var errSum = 0;
+var lastErr = 0;
 var sendValueViaSocket = function(){}; // var for sending messages
 
 board.on("ready", function(){
