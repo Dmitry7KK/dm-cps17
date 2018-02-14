@@ -7,11 +7,13 @@ console.log("Starting the code");
 
 var board = new firmata.Board("/dev/ttyACM0", function(){
     console.log("Connecting to Arduino");
-    board.pinMode(0, board.MODES.ANALOG); // enable analog pin 0
-    board.pinMode(1, board.MODES.ANALOG); // enable analog pin 1
+    console.log("Enabling analog pin 0");
+    board.pinMode(0, board.MODES.ANALOG); // declare analog pin 0
+    console.log("Enabling analog pin 1");
+    board.pinMode(1, board.MODES.ANALOG); // declare analog pin 0
     board.pinMode(2, board.MODES.OUTPUT); // direction of DC motor
-    board.pinMode(3, board.MODES.PWM); // PWM of motor
-    board.pinMode(4, board.MODES.OUTPUT); // direction of DC motor
+    board.pinMode(3, board.MODES.PWM); // PWM of motor i.e. speed of rotation
+    board.pinMode(8, board.MODES.OUTPUT); // direction DC motor
 });
 
 function handler(req, res) {
@@ -95,8 +97,8 @@ function controlAlgorithm (parameters) {
         pwm = parameters.pCoeff*(desiredValue-actualValue);
         if (pwm > pwmLimit) {pwm =  pwmLimit}; // to limit pwm values
         if (pwm < -pwmLimit) {pwm = -pwmLimit}; // to limit pwm values
-        if (pwm > 0) {board.digitalWrite(2,1); board.digitalWrite(4,0);}; // direction if > 0
-        if (pwm < 0) {board.digitalWrite(2,0); board.digitalWrite(4,1);}; // direction if < 0
+        if (pwm > 0) {board.digitalWrite(2,1); board.digitalWrite(8,0);}; // direction if > 0
+        if (pwm < 0) {board.digitalWrite(2,0); board.digitalWrite(8,1);}; // direction if < 0
         board.analogWrite(3, Math.abs(pwm));
     }
     if (parameters.ctrlAlgNo == 2) {
@@ -107,8 +109,8 @@ function controlAlgorithm (parameters) {
         lastErr = err; // save the value of error for next cycle to estimate the derivative
         if (pwm > pwmLimit) {pwm =  pwmLimit}; // to limit pwm values
         if (pwm < -pwmLimit) {pwm = -pwmLimit}; // to limit pwm values
-        if (pwm > 0) {board.digitalWrite(2,1); board.digitalWrite(4,0);}; // direction if > 0
-        if (pwm < 0) {board.digitalWrite(2,0); board.digitalWrite(4,1);}; // direction if < 0
+        if (pwm > 0) {board.digitalWrite(2,1); board.digitalWrite(8,0);}; // direction if > 0
+        if (pwm < 0) {board.digitalWrite(2,0); board.digitalWrite(8,1);}; // direction if < 0
         board.analogWrite(3, Math.abs(pwm));        
     }
     
