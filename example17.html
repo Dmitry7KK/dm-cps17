@@ -49,45 +49,44 @@ var canvas2;
 var ctx1;
 var ctx2;
 var pwm;
-function load() { 
-
+function load() { // function that is started, when we open the page
     canvas1 = document.getElementById("canvas1");
     ctx1 = canvas1.getContext("2d");
     
     canvas2 = document.getElementById("canvas2");
     ctx2 = canvas2.getContext("2d");
-    
+    // initialization of first graph
     for (var i=0; i<200; i++) {
-        x1[i] = i; 
-        y1[i] = 0; 
+        x1[i] = i; // for x values are 0, 1, 2, ...
+        y1[i] = 0; // for y values are 0
     };
     
-    
+    // initializaion of second graph
     for (var i=0; i<200; i++) {
-        x2[i] = i; 
-        y2[i] = 0; 
+        x2[i] = i; // x2 values are 0, 1, 2, ...
+        y2[i] = 0; // for y2 values are 0
     };
     
-    
+    // initialization of xy3 variables
     for (var i=0; i<200; i++) {
-        x3[i] = i; 
-        y3[i] = 0; 
+        x3[i] = i; // x values are 0, 1, 2, ...
+        y3[i] = 0; // for y values are 0
     };
     
 };
 var divForPrint = document.getElementById("divForPrint");
-var numberOfLinesInLog = 20; 
-var counterOfLogs = 0; 
-function log(msg) { 
-
-    var node=document.createElement("tr"); 
-    var textnode=document.createTextNode(counterOfLogs + " | " + msg); 
-    node.appendChild(textnode); 
-    divForPrint.insertBefore(node, divForPrint.childNodes[0]); 
-    if (counterOfLogs > numberOfLinesInLog-1) { 
-        divForPrint.removeChild(divForPrint.childNodes[numberOfLinesInLog]); 
+// var for printing messages
+var numberOfLinesInLog = 20; // variable for the number of lines in log div
+var counterOfLogs = 0; // variable for counting the logs
+function log(msg) { // function to print messages to div with implemented scroll
+    var node=document.createElement("tr"); // we create variable node as tr (table row)
+    var textnode=document.createTextNode(counterOfLogs + " | " + msg); // create elem. with text
+    node.appendChild(textnode); // add to "node", i.e. table row
+    divForPrint.insertBefore(node, divForPrint.childNodes[0]); // insert into variable divForPrint -> document.getElementById("divForPrint");
+    if (counterOfLogs > numberOfLinesInLog-1) { // if there are more numbers as e.g. 10
+        divForPrint.removeChild(divForPrint.childNodes[numberOfLinesInLog]); // remove the oldest printout
     }
-    counterOfLogs = counterOfLogs + 1; 
+    counterOfLogs = counterOfLogs + 1; // increase the counter of logs
 }
 var socket = io.connect("192.168.1.134:8080"); // connect via socket
 socket.on("messageToClient", function (msg){
@@ -188,29 +187,29 @@ socket.on("clientReadValues", function(value) {
     log(value.desiredValue + "|" + value.actualValue + "|" + (value.desiredValue-value.actualValue) + "|" + (value.pwm).toFixed(0));
 })
 function startControlAlgorithm1() {
-    stopControlAlgorithm(); 
-    pCoeff = document.getElementById("pCoeff").value; 
-    socket.emit("startControlAlgorithm", {"ctrlAlgNo": 1, "pCoeff": pCoeff}); 
+    stopControlAlgorithm(); // just in case, if it is not started
+    pCoeff = document.getElementById("pCoeff").value; // read the value of coeff from input field
+    socket.emit("startControlAlgorithm", {"ctrlAlgNo": 1, "pCoeff": pCoeff}); // send value of coeff
 }
 function startControlAlgorithm2() {
-    stopControlAlgorithm(); 
-    Kp1 = document.getElementById("Kp1").value; /
-    Ki1 = document.getElementById("Ki1").value; 
-    Kd1 = document.getElementById("Kd1").value; 
-    socket.emit("startControlAlgorithm", {"ctrlAlgNo": 2, "Kp1": Kp1, "Ki1": Ki1, "Kd1": Kd1}); 
+    stopControlAlgorithm(); // just in case, if it is not started
+    Kp1 = document.getElementById("Kp1").value; // read the value of coeff from input field
+    Ki1 = document.getElementById("Ki1").value; // read the value of coeff from input field
+    Kd1 = document.getElementById("Kd1").value; // read the value of coeff from input field
+    socket.emit("startControlAlgorithm", {"ctrlAlgNo": 2, "Kp1": Kp1, "Ki1": Ki1, "Kd1": Kd1}); // send value of coeff
 }
 function startControlAlgorithm3() {
-    stopControlAlgorithm(); 
-    Kp2 = document.getElementById("Kp2").value; 
-    Ki2 = document.getElementById("Ki2").value; 
-    Kd2 = document.getElementById("Kd2").value; 
-    socket.emit("startControlAlgorithm", {"ctrlAlgNo": 3, "Kp2": Kp2, "Ki2": Ki2, "Kd2": Kd2}); 
+    stopControlAlgorithm(); // just in case, if it is not started
+    Kp2 = document.getElementById("Kp2").value; // read the value of coeff from input field
+    Ki2 = document.getElementById("Ki2").value; // read the value of coeff from input field
+    Kd2 = document.getElementById("Kd2").value; // read the value of coeff from input field
+    socket.emit("startControlAlgorithm", {"ctrlAlgNo": 3, "Kp2": Kp2, "Ki2": Ki2, "Kd2": Kd2}); // send value of coeff
 }
 function stopControlAlgorithm() {
     socket.emit("stopControlAlgorithm");
 }
 socket.on("disconnect", function(){
-    log("Disconnected from the server"); 
+    log("Disconnected from the server"); // we print status of disconn. to div
 });
     
 </script>
