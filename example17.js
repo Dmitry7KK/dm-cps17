@@ -17,7 +17,7 @@ var board = new firmata.Board("/dev/ttyACM0", function(){
 });
 
 function handler(req, res) {
-    fs.readFile(__dirname + "/example16.html",
+    fs.readFile(__dirname + "/example17.html",
     function (err, data) {
         if (err) {
             res.writeHead(500, {"Content-Type": "text/plain"});
@@ -28,32 +28,32 @@ function handler(req, res) {
     })
 }
 
-var desiredValue = 0; // desired value var
-var actualValue = 0; // actual value var
+var desiredValue = 0; 
+var actualValue = 0; 
 
-var Kp = 0.55; // proportional factor of PID controller
-var Ki = 0.008; // integral factor of PID controller
-var Kd = 0.15; // differential factor of PID controller
+var Kp = 0.55; 
+var Ki = 0.008; 
+var Kd = 0.15; 
 
 
-var factor = 0.3; // proportional factor that deterimes speed of res.
-var pwm = 0; // set pwm as global variable
-var pwmLimit = 254; // to limit value of the pwm that is sent to the motor
+var factor = 0.3; 
+var pwm = 0; 
+var pwmLimit = 254; 
 
-var err = 0; // error
-var errSum = 0; // sum of errors as integral
-var dErr = 0; // difference of error
-var lastErr = 0; // to keep the value of previous error to estimate derivative
+var err = 0; 
+var errSum = 0; 
+var dErr = 0; 
+var lastErr = 0; 
 
-var controlAlgorithmStartedFlag = 0; // variable for indicating weather the Alg has benn sta.
-var intervalCtrl; // var for setInterval in global scope
+var controlAlgorithmStartedFlag = 0; 
+var intervalCtrl; 
 
 
 
 http.listen(8080); // server will listen on port 8080
 
-var sendValueViaSocket = function(){}; // var for sending messages
-var sendStaticMsgViaSocket = function(){}; // for sending static messages
+var sendValueViaSocket = function(){};
+var sendStaticMsgViaSocket = function(){}; 
 
 board.on("ready", function(){
     
@@ -95,20 +95,20 @@ io.sockets.on("connection", function(socket) {
 function controlAlgorithm (parameters) {
     if (parameters.ctrlAlgNo == 1) {
         pwm = parameters.pCoeff*(desiredValue-actualValue);
-        if (pwm > pwmLimit) {pwm =  pwmLimit}; // to limit pwm values
-        if (pwm < -pwmLimit) {pwm = -pwmLimit}; // to limit pwm values
+        if (pwm > pwmLimit) {pwm =  pwmLimit}; 
+        if (pwm < -pwmLimit) {pwm = -pwmLimit};
         if (pwm > 0) {board.digitalWrite(2,1); board.digitalWrite(8,0);}; // direction if > 0
         if (pwm < 0) {board.digitalWrite(2,0); board.digitalWrite(8,1);}; // direction if < 0
         board.analogWrite(3, Math.abs(pwm));
     }
     if (parameters.ctrlAlgNo == 2) {
-        err = desiredValue - actualValue; // error as difference between desired and actual val.
-        errSum += err; // sum of errors | like integral
-        dErr = err - lastErr; // difference of error
-        pwm = parameters.Kp1*err+parameters.Ki1*errSum+parameters.Kd1*dErr; // PID expression
-        lastErr = err; // save the value of error for next cycle to estimate the derivative
-        if (pwm > pwmLimit) {pwm =  pwmLimit}; // to limit pwm values
-        if (pwm < -pwmLimit) {pwm = -pwmLimit}; // to limit pwm values
+        err = desiredValue - actualValue; 
+        errSum += err; 
+        dErr = err - lastErr; 
+        pwm = parameters.Kp1*err+parameters.Ki1*errSum+parameters.Kd1*dErr; 
+        lastErr = err; 
+        if (pwm > pwmLimit) {pwm =  pwmLimit};
+        if (pwm < -pwmLimit) {pwm = -pwmLimit}; 
         if (pwm > 0) {board.digitalWrite(2,1); board.digitalWrite(8,0);}; // direction if > 0
         if (pwm < 0) {board.digitalWrite(2,0); board.digitalWrite(8,1);}; // direction if < 0
         board.analogWrite(3, Math.abs(pwm));        
@@ -128,7 +128,7 @@ function startControlAlgorithm (parameters) {
 };
 
 function stopControlAlgorithm () {
-    clearInterval(intervalCtrl); // clear the interval of control algorihtm
+    clearInterval(intervalCtrl); 
     board.analogWrite(3, 0);
     controlAlgorithmStartedFlag = 0;
     console.log("Control algorithm has been stopped.");
@@ -144,7 +144,7 @@ function sendValues (socket) {
     });
 };
 
-function json2txt(obj) // function to print out the json names and values
+function json2txt(obj) 
 {
   var txt = '';
   var recurse = function(_obj) {

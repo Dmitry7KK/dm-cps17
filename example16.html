@@ -69,10 +69,15 @@ function log(msg) {
     }
     counterOfLogs = counterOfLogs + 1; 
 }
+
+
 var socket = io.connect("192.168.1.134:8080"); 
+
 socket.on("messageToClient", function (msg){
     log(msg); 
 });
+
+
 socket.on("staticMsgToClient", function(msg) { 
     document.getElementById("divForStaticPrint").innerHTML = "Status: " + msg; 
 });
