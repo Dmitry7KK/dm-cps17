@@ -1,4 +1,4 @@
-ar http = require("http").createServer(handler); // on req - hand
+var http = require("http").createServer(handler); // on req - hand
 var io = require("socket.io").listen(http); // socket library
 var fs = require("fs"); // variable for file system for providing html
 var firmata = require("firmata");
@@ -47,7 +47,8 @@ var lastErr = 0;
 var KpE = 0; 
 var KiIedt = 0; 
 var KdDe_dt = 0; 
-var errSumAbs = 0;
+
+var errSumAbs = 0;// sum of absolute errors as perfomance measure
 
 var controlAlgorithmStartedFlag = 0; 
 var intervalCtrl; 
