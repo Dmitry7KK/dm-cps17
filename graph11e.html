@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Univerza v Mariboru | Fakulteta za organizacijske vede -->
+<!-- Laboratorij za kibernetiko in sisteme za podporo odločanju -->
+<!-- Andrej Škraba  2017 -->
+
+<html>
+<head>
+<title>Example with graph</title>    
+</head>
+    
+<body>
+Example with graph
+<br>
+<canvas id="canvas1" width="200" height="100" style="border:1px dashed #00c3c3"></canvas>
+
+<script type="text/javascript">
+"use strict"; // enable classes
+    
+var canvas, ctx; // create two variables for canvas and context (ctx)
+
+canvas = document.getElementById("canvas1");
+ctx = canvas.getContext("2d");
+ctx.strokeStyle = "#ff0000"; // determine red color of the graph
+
+var x = new Array(); // ustvarimo novo polje x
+var y = new Array(); // ustvarimo novo polje y
+
+x[0] = 0;
+y[0] = 70;
+x[1] = 50;
+y[1] = 80;
+x[2] = 100;
+y[2] = 40;
+x[3] = 150;
+y[3] = 60;
+x[4] = 200;
+y[4] = 10;
+
+ctx.beginPath();
+
+for (var i=0; i<y.length; i++) {
+    ctx.lineTo(x[i], y[i]);
+}
+
+ctx.stroke(); // in order to show it on the canvas
+    
+</script>
+
+</body>    
+    
+</html>
