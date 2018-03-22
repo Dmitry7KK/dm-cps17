@@ -9,10 +9,12 @@ var board = new firmata.Board("/dev/ttyACM0", function(){
     console.log("Connecting to Arduino");
     console.log("Enabling analog pin 0");
     board.pinMode(0, board.MODES.ANALOG); 
+    console.log("Enabling analog pin 1");
+    board.pinMode(1, board.MODES.ANALOG); 
 });
 
 function handler(req, res) {
-    fs.readFile(__dirname + "/st01.html",
+    fs.readFile(__dirname + "/st02.html",
     function (err, data) {
         if (err) {
             res.writeHead(500, {"Content-Type": "text/plain"});
@@ -26,12 +28,17 @@ function handler(req, res) {
 http.listen(8080); // server will listen on port 8080
 
 var desiredValue = 0;
+var actualValue = 0;
 
 board.on("ready", function() {
     
     board.analogRead(0, function(value){
         desiredValue = value; 
     });
+    
+    board.analogRead(1, function(value){
+        actualValue = value; 
+    });    
 
     
     io.sockets.on("connection", function(socket) {
@@ -45,6 +52,7 @@ board.on("ready", function() {
 function sendValues (socket) {
     socket.emit("clientReadValues",
     {
-    "desiredValue": desiredValue
+    "desiredValue": desiredValue,
+    "actualValue" : actualValue
     });
 };
