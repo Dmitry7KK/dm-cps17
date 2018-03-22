@@ -9,7 +9,7 @@
 <body onload="load()";>
     
 <div>
-<canvas id="canvas1" width ="200" height = "100" style="border: 1px dashed #00c3c3;"></canvas>    
+<canvas id="canvas1" width ="350" height = "250" style="border: 1px dashed #00c3c3;"></canvas>    
 </div>    
     
 <div id="print1"></div>    
@@ -24,9 +24,12 @@ var divElement = document.getElementById("print1");
 var numberOfLinesBeforeScroll = 10;
 var linesPrintCounter = 0;
 var potValue1 = 0; 
+var x1 = new Array(); 
+var y1 = new Array();
 var canvas1;
 var ctx1;    
-    
+var I;
+
 function log(msg) {
     var node=document.createElement("tr"); 
     var textnode=document.createTextNode(linesPrintCounter + " | " + msg);
@@ -58,20 +61,12 @@ socket.on("clientReadValues", function(value) {
     potValue1 = value.desiredValue;
     
     
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // brišemo celotno platno
-    if (x > 360) {
-        step = -step; // obrnemo smer, če pridemo do konca platna na desni
-    }
-    if (x < 180) {
-        step = -step; // obrnemo smer, če pridemo do konca platna na levi
-    }
-    
-    x = x + step; // spremenimo vrednost x koordinate
-    I = x/180*Math.PI
-    ctx.beginPath();
-    ctx.lineTo(150,150); 
-    ctx.lineTo(100*Math.cos(I)+150,100*Math.sin(I)+150);
-    ctx.stroke();
+    ctx1.clearRect(0, 0, canvas1.width, canvas1.height); // brišemo celotno platno
+    I = potValue1/180*Math.PI
+    ctx1.beginPath();
+    ctx1.lineTo(150,150); 
+    ctx1.lineTo(100*Math.cos(I)+150,100*Math.sin(I)+150);
+    ctx1.stroke();
     
     log(value.desiredValue);
 });
